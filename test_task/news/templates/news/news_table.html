@@ -1,0 +1,23 @@
+{% extends 'tree_menu/base.html' %}
+{% load menu_tags %}
+{% load news_tags %}
+
+{% block content %}
+
+<div class="row g-0">
+    <div class="col-2">{% draw_menu 'news' request %}</div>
+    <div class="col">
+        <header class="masthead text-center">
+            <div class="masthead-content">
+                <div class="container px-5">
+                    <h1 class="masthead-heading mb-0">NEWS</h1>
+                    <h2 class="masthead-subheading mb-0">Всегда внимательно читайте новости</h2>
+                    {% draw_news 'все' request %}
+                </div>
+            </div>
+        </header>
+    </div>
+</div>
+
+
+{% endblock %}

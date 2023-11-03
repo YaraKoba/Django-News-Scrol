@@ -1,0 +1,43 @@
+<!--Перебираем все компоненты этого уровня-->
+{% for iter in item %}
+<li class="list-group-item">
+    <div class="row row-cols-auto">
+        <div class="col">
+
+            <!-- Если url компонента совпадает с текущим url, сделать его активным -->
+            <a type="button"
+               href="{{iter.href}}"
+               role="button"
+               {% if iter.current %}
+               class="btn btn-outline-success active"
+               {% else %}
+               class="btn btn-outline-success"
+               {% endif %}>
+                {{iter.name}}
+            </a>
+        </div>
+
+        <!-- Если есть дети, то рекурсивно запускаем этот шаблон -->
+        {% if iter.children %}
+        <div class="col">
+            <div data-bs-toggle="collapse"
+                 href="{{iter.href}}"
+                 data-bs-target="#{{iter.name}}{{menu}}"
+                 aria-controls="{{iter.name}}{{menu}}">
+
+                <a type="button" href="{{iter.href}}" role="button" class="btn btn-outline-secondary"> ↓ </a>
+
+            </div>
+        </div>
+    </div>
+    <ul id="{{iter.name}}{{menu}}" class=" list-group list-group-flush collapse{% if iter.is_active %} show{% endif %}">
+
+        <!-- Рекурсия начинается тут -->
+        {% include 'tree_menu/children.html' with item=iter.children %}
+    </ul>
+  {% endif %}
+</li>
+{% endfor %}
+
+
+
