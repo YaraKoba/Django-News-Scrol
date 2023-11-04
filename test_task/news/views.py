@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from news.models import News
 from news.serializers import NewsEasySerializers, NewsBodySerializers
@@ -22,20 +22,29 @@ def api_overview(request):
     return Response(api_urls)
 
 
+class NewsPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
+
+
 class NewsEasyView(generics.ListAPIView):
-    queryset = News.objects.all()
+    queryset = News.objects.all().order_by('-create_at')
     serializer_class = NewsEasySerializers
+    pagination_class = NewsPagination
 
 
-class NewsBodyView(APIView):
-    def get(self, request, pk):
-        try:
-            news = News.objects.get(pk=pk)
-        except News.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = NewsBodySerializers(news)
-        return Response(serializer.data)
+@api_view(['GET'])
+def get_news_body(request, pk):
+    try:
+        news = News.objects.get(pk=pk)
+    except News.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = NewsBodySerializers(news)
+    return Response(serializer.data)
 
 
 def news_page(request, *args, **kwargs):

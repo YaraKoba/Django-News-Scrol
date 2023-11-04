@@ -3,8 +3,8 @@ from news.models import Tag, News
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tag', 'user')
-    list_filter = ('user', 'tag',)
+    list_display = ('title', 'user')
+    list_filter = ('tag',)
 
 
 class TagAdmin(admin.ModelAdmin):
