@@ -11,8 +11,10 @@
             <div class="masthead-content">
                 <div class="container px-5">
                     <h1 class="masthead-heading mb-0">NEWS</h1>
-                    <h2 class="masthead-subheading mb-0">Всегда внимательно читайте новости</h2>
-                    {% draw_news 'все' request %}
+                    <h2 class="masthead-subheading mb-5">Всегда внимательно читайте новости</h2>
+                    <div id="news-container">
+                        {% draw_news 'все' request %}
+                    </div>
                 </div>
             </div>
         </header>

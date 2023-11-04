@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tree_menu.apps.ThreeMenuConfig',
     'news.apps.NewsConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +126,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = []
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'tree_menu/static'),
+    os.path.join(BASE_DIR, 'news/static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

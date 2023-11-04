@@ -11,5 +11,4 @@ def draw_news(tag, request):
     else:
         news = News.objects.filter(tag__name=tag)
 
-    print(news.first().img.url)
     return {'items': list(news), 'tag': tag}
