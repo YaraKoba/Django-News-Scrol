@@ -6,13 +6,6 @@ let page = 1
 let isLoading = false;
 
 
-function isScrollPositionEnd() {
-  const scrollPosition = window.innerHeight + window.scrollY;
-  const containerHeight = newsContainer.offsetHeight;
-
-  return scrollPosition >= containerHeight;
-}
-
 const fetchMoreNews = () => {
         if (isLoading || !page) return;
         loader.style.display = 'block';
@@ -39,20 +32,23 @@ const fetchMoreNews = () => {
           } else {
             page++;
           }
-
           isLoading = false;
 
-        if (newsContainer.offsetHeight < window.innerHeight) {
-            fetchMoreNews();
-        }
+          if (newsContainer.offsetHeight < window.innerHeight) {
+           fetchMoreNews();
+          }
         });
 };
 
+
 const handleScroll = () => {
-  if (isScrollPositionEnd()) {
+  const scrollPosition = window.innerHeight + window.scrollY;
+  const containerHeight = newsContainer.offsetHeight;
+  if (scrollPosition >= containerHeight) {
     fetchMoreNews();
   }
 };
+
 
 window.addEventListener('scroll', handleScroll);
 fetchMoreNews();

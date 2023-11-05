@@ -1,6 +1,7 @@
 {% extends 'tree_menu/base.html' %}
 {% load menu_tags %}
-{% load news_tags %}
+{% load static %}
+
 
 {% block content %}
 
@@ -20,5 +21,6 @@
     </div>
 </div>
 
+<script type="module" src="{% static 'news/js/infinite-scroll.js' %}"></script>
 
 {% endblock %}

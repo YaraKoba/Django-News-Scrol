@@ -1,0 +1,38 @@
+{% extends 'tree_menu/base.html' %}
+{% load menu_tags %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="row g-0">
+    <div class="col-2">{% draw_menu 'news' request %}</div>
+    <div class="col">
+        <header class="masthead text-center">
+            <div class="masthead-content">
+                <div class="container-fluid px-5 g-0">
+                    <div class="card min-vh-100 align-item-center">
+                        <div id="post-title" ></div>
+                        <div class="card-body text-start">
+                            <div id="post-subtitle" class="card-subtitle text-muted"></div>
+                            <div id="post-body" class="card-text mt-3"></div>
+                        </div>
+                        <div class="btn-group mb-5 ms-5" role="group" aria-label="Лайки и дизлайки" style="width: 20%;">
+                            <button id="likeButton" class="btn btn-primary">
+                                <img src="/media/like.png" width="30" height="30" class="img-fluid" alt="card-horizontal-image">
+                            </button>
+                            <span id="likesCount" class="btn btn-outline-primary disabled">0</span>
+                            <button id="dislikeButton" class="btn btn-danger">
+                                <img src="/media/dislike.png" width="30" height="30" class="img-fluid" alt="card-horizontal-image">
+                            </button>
+                            <span id="dislikesCount" class="btn btn-outline-danger disabled">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</div>
+<script type="module" src="{% static 'news/js/post.js' %}"></script>
+
+{% endblock %}

@@ -17,6 +17,8 @@ class News(models.Model):
     body = models.TextField(max_length=5000)
     img = models.ImageField(null=True, blank=True)
     create_at = models.DateTimeField(default=timezone.now)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     user = models.ForeignKey(User, related_name='news', on_delete=models.CASCADE, default=None)
     tag = models.ManyToManyField(Tag, related_name='news', blank=True)
