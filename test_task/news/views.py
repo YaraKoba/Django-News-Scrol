@@ -5,9 +5,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from news.utils import update_likes
-from news.models import News
-from news.serializers import NewsEasySerializers, NewsBodySerializers, NewsLikesSerializers
+from news.models import News, Tag
+from news.serializers import NewsEasySerializers, NewsBodySerializers, NewsLikesSerializers, TagSerializers
 
 
 @api_view(['GET'])
@@ -38,7 +37,7 @@ class NewsPaginationView(generics.ListAPIView):
         tags_param = self.request.query_params.get('tags', None)
 
         if tags_param:
-            tags = tags_param.split(',')  # Разделяем теги по запятым
+            tags = tags_param.split(',')
             queryset = queryset.filter(tag__name__in=tags).distinct()
 
         return queryset
@@ -52,6 +51,13 @@ def get_news_body(request: Request, pk: int):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     serializer = NewsBodySerializers(news)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_tags(request: Request):
+    tags = Tag.objects.all()
+    serializer = TagSerializers(tags)
     return Response(serializer.data)
 
 
@@ -130,3 +136,6 @@ def news_table(request, *args, **kwargs):
 
 def news_page(request, *args, **kwargs):
     return render(request, 'news/news_post.html')
+
+def news_by_tag(request, *args, **kwargs):
+    return render(request, 'news/news_by_tag.html')

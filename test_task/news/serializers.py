@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from news.models import News
+from news.models import News, Tag
 
 
 class NewsEasySerializers(serializers.ModelSerializer):
@@ -32,3 +32,14 @@ class NewsLikesSerializers(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ('id', 'likes', 'dislikes')
+
+
+class TagSerializers(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Tag
+        fields = ('tags',)
+
+    def get_tags(self, obj):
+        return [tag.name for tag in obj.all()]

@@ -27,7 +27,7 @@ export function generateNewsHTML(news_data) {
 
             <div class="col-7 col-sm-8">
               <div class="card-body">
-                 <div class="card-title"><a class="text-decoration-none text-dark fs-5" href="/news/news/${item.id}">${item.title}</a></div>
+                 <div class="card-title"><a class="text-decoration-none text-dark fs-5" style="cursor: pointer;" href="/news/news/${item.id}">${item.title}</a></div>
                  <p class="card-text">Автор: ${item.user_name}</p>
                  <p class="card-text"><small class="text-muted">${item.create_at} | Теги: ${getTagHTML(item.tags)}</small></p>
               </div>

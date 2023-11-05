@@ -13,7 +13,24 @@
                 <div class="container px-5">
                     <h1 class="masthead-heading mb-0">NEWS STARISTIC</h1>
                     <h2 class="masthead-subheading mb-5">Внимательно узучайте статисику</h2>
+
+                    <div class="tag-container flex-column justify-content-start mb-5">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="tag-input" placeholder="Добавьте тег">
+                            <button id="add-tag-button" class="btn btn-secondary">Добавить Тег</button>
+                            <button id="search-button" class="btn btn-success">🔎</button>
+                        </div> 
+                        <div class="autocomplete">
+                            <ul id="tag-suggestions" class="list-group"></ul>
+                        </div>
+                        <div class="tag-list" id="tag-list">
+                            <!-- Сюда будут добавляться теги -->
+                        </div>
+                    </div>
+
+
                     <div id="news-container">
+                        <!-- Сюда будут добавляться новости -->
                     </div>
                 </div>
             </div>
@@ -21,6 +38,6 @@
     </div>
 </div>
 
-{% comment %} <script type="module" src="{% static 'news/js/infinite-scroll.js' %}"></script> {% endcomment %}
+<script type="module" src="{% static 'news/js/news-by-tag.js' %}"></script>
 
 {% endblock %}
