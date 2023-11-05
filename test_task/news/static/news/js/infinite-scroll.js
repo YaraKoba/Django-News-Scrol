@@ -2,54 +2,50 @@ import { generateNewsHTML } from './generateHTML.js';
 
 const newsContainer = document.getElementById('news-container');
 const loader = document.getElementById('loader');
-let page = 1
-let isLoading = false;
 
+const fetchNews = async (url, container) => {
+  try {
+    const response = await fetch(url);
 
-const fetchMoreNews = () => {
-        if (isLoading || !page) return;
-        loader.style.display = 'block';
-        isLoading = true;
+    if (!response.ok) {
+      throw new Error("Ошибка при выполнении запроса");
+    }
 
-        const apiUrl = `http://127.0.0.1:8000/api/news/?page=${page}`;
+    const newsData = await response.json();
+    const results = newsData.results;
+    const newNewsHTML = generateNewsHTML(results);
+    container.insertAdjacentHTML('beforeend', newNewsHTML);
+    loader.style.display = 'none';
+    let next_url = newsData.next;
 
-        fetch(apiUrl)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Ошибка при выполнении запроса");
-        })
-        .then(newsData => {
-          const results = newsData.results;
-          const newNewsHTML = generateNewsHTML(results);
-          newsContainer.insertAdjacentHTML('beforeend', newNewsHTML);
-          console.log(newsContainer.offsetHeight, window.innerHeight)
-          loader.style.display = 'none';
+    if (newsContainer.offsetHeight < window.innerHeight && next_url) {
+      await fetchNews(next_url, container);
+    }
 
-          if (!newsData.next) {
-            page = null
-          } else {
-            page++;
-          }
-          isLoading = false;
-
-          if (newsContainer.offsetHeight < window.innerHeight) {
-           fetchMoreNews();
-          }
-        });
+    return next_url;
+  } catch (error) {
+    console.error(error);
+    return null; // или другое значение по умолчанию, если произошла ошибка
+  }
 };
 
+let api_url = 'http://127.0.0.1:8000/api/news/?page=1';
+let load = false;
+
+const getMoreNews = async () => {
+  if (load || !api_url) return;
+  load = true;
+  api_url = await fetchNews(api_url, newsContainer);
+  load = false;
+};
 
 const handleScroll = () => {
   const scrollPosition = window.innerHeight + window.scrollY;
   const containerHeight = newsContainer.offsetHeight;
   if (scrollPosition >= containerHeight) {
-    fetchMoreNews();
+    getMoreNews();
   }
 };
 
-
+window.addEventListener('load', getMoreNews);
 window.addEventListener('scroll', handleScroll);
-fetchMoreNews();
-

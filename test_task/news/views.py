@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status, serializers
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
@@ -14,8 +14,7 @@ from news.serializers import NewsEasySerializers, NewsBodySerializers, NewsLikes
 def api_overview(request):
     api_urls = {
         'api overview': '/',
-        'all news': '/news',
-        'Search by Tag': '/?tag=tag_name',
+        'Pagination news': 'news/?tags=tag1,tag2,tag3',
         'Search by Subcategory': '/?subcategory=category_name',
         'Add': '/news/create',
         'Update': '/news/update/pk',
@@ -30,10 +29,19 @@ class NewsPagination(PageNumberPagination):
     max_page_size = 10
 
 
-class NewsEasyView(generics.ListAPIView):
-    queryset = News.objects.all().order_by('-create_at')
+class NewsPaginationView(generics.ListAPIView):
     serializer_class = NewsEasySerializers
     pagination_class = NewsPagination
+
+    def get_queryset(self):
+        queryset = News.objects.all().order_by('-create_at')
+        tags_param = self.request.query_params.get('tags', None)
+
+        if tags_param:
+            tags = tags_param.split(',')  # Разделяем теги по запятым
+            queryset = queryset.filter(tag__name__in=tags).distinct()
+
+        return queryset
 
 
 @api_view(['GET'])
@@ -45,6 +53,47 @@ def get_news_body(request: Request, pk: int):
 
     serializer = NewsBodySerializers(news)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def create_post(request: Request):
+    new_post = NewsBodySerializers(data=request.data)
+
+    if News.objects.filter(**request.data).exists():
+        raise serializers.ValidationError('This data already exists')
+    
+    if new_post.is_valid():
+        new_post.save()
+        return Response(new_post.data)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def update_post(request: Request, pk):
+    try:
+        post = News.objects.get(pk=pk)
+    except News.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    update_data = NewsBodySerializers(instance=post, data=request.data)
+
+    if update_data.is_valid():
+        update_data.save()
+        return Response(update_data.data)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_post(request, pk):
+    try:
+        post = News.objects.get(pk=pk)
+    except News.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    post.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)
 
 
 

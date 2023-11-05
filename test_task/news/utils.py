@@ -1,5 +1,4 @@
 
-
 def update_likes(news, data):
     if data.get('action') == 'plus' and data.get('type') in ['likes', 'dislikes']:
         if data['type'] == 'likes':
