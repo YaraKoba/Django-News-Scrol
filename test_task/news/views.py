@@ -130,12 +130,16 @@ def change_likes(request: Request, pk):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
 
-def news_table(request, *args, **kwargs):
-    return render(request, 'news/news_table.html')
+def news_main(request: Request, *args, **kwargs):
+    if request.path == '/news/news/':
+        file = 'news/news_table.html'
+    elif request.path == '/news/news-by-tag/':
+        file = 'news/news_by_tag.html'
+    elif request.path == '/news/news-statistics/':
+        file = 'news/news_statistic.html'
+    return render(request, file)
 
 
 def news_page(request, *args, **kwargs):
     return render(request, 'news/news_post.html')
 
-def news_by_tag(request, *args, **kwargs):
-    return render(request, 'news/news_by_tag.html')
