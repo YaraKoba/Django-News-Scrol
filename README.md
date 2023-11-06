@@ -1,76 +1,116 @@
 [![](https://img.shields.io/pypi/pyversions/django-admin-interface.svg?color=3776AB&logo=python&logoColor=white)](https://www.python.org/)
 
-# Django-tree-menu
-`Stack:` `Python` `Django` `PostgreSQL`
-## Все делал самостоятельно, лишь взял скелет Django проекта.
-Вся логика описана в комментариях в коде.
+# Django NEWS app
+`Stack:` `Python` `Django` `PostgreSQL` `js` `django-rest-framework`
 
-Жду с нетерпением обратную связь
-
-### Важные файлы:
-1) Шаблон с созданием меню `tree_menu/templates/tree_menu/children.html`
-2) Теги, запрос в БД `tree_menu/templatetags/menu_tags.py`
-3) Модели: `tree_menu/models.py`
+Проект состоит из 4 страниц. Все Новости, Страница Поста, Новости по Тегу, Статитстика Новостей.
 
 
-## Show how it works
+## Основные фичи
 
-### Everything that is on the dedicated point is deployed
+### Бесконечная прокрутка
+Установил обработчик событий на скрол и если наша позиция на экране больше чем ширина блока с постами, то подгружаем новые 3 поста.
+Этот процесс почти не заметен, но если поставить timeSleep, то видно хорошо.
 
-![sow.gif](media%2Fsow.gif)
+![infinite-scrol.gif](media%2Finfinite-scrol.gif)
 
-### When clicking on the menu, there is a transition at the URL specified in it.
+### Возможность ставить Лайк, Дизлайк под новостью
+Счетчик лайков/дизлайков всегда возвращает актуальное кол-во, т-к делает запрос на сервер после нажатия на кнопку.
+Также есть возможность поменять свое решение или отменить вовсе.
 
-![sow2.gif](media%2Fsow2.gif)
+![like.gif](media%2Flike.gif)
 
-### Is edited in the standard Django admin panel
+### Сортировка по тегам
+Модели новости и тега связаны через ManyToMany, это позволяет быстро отфильтровать новости по тегам.
+Чем больше тегов выбрать, тем больше совпадений с новостями, следовательно больше результатов.
 
-![admin_panel.gif](media%2Fadmin_panel.gif)
+![tags2.gif](media%2Ftags2.gif)
 
-![update.gif](media%2Fupdate.gif)
+### Страница статистики
+Тут я реализовал диаграмму постов, где можно выбрать разные фильтры для анализа Новостей. 
+Доступны фильтры:
+1. По кол-ву лайков
+2. По кол-ву дизлайков
+3. По кол-ву просмотров
+Просмотры растут при каждом посещении страницы новости.
 
-## Installation
+![diagram.gif](media%2Fdiagram.gif)
 
+### Джанго админка
+Стандартная джанго админка, в которой можно упровлять базой данных.
+
+![admin.gif](media%2Fadmin.gif)
+
+## API
+Доступны базовые операции с постами новостей `CRUD`
 ```commandline
-git clone git@github.com:YaraKoba/django_tree_menu.git
-cd django_tree_menu
-python -m venv venv
-source venv/bin/activate
+{
+    'api overview': 'api/',
+    'Read pagination news with search by tags': 'news/?page=<page_num>&tags=<tag1>,<tag2>,<tag3>',
+    'Create': '/news/create',
+    'Update': '/news/<pk>/update',
+    'Delete': '/news/<pk>/delete'
+}
+```
+Так же есть более узко направленные `API`
+```commandline
+{
+    'Read all news with order by filter': 'api/news/statistics/?filter=<filter>',
+    'Read all tags': 'api/news/tags',
+    'Read one news': 'api/news/<int:pk>/',
+    'Update likes or dislike': 'api/news/<int:pk>/change-likes',
+}
 ```
 
-### Install requirements
+## Установка
+Клонируйте мой репозиторий, создайте виртуально окружение и файл `.env`, ниже поля для `.env`
+```commandline
+NAME_DB = <name postgres db>
+USER_DB = <name postgres user db>
+PASS_DB = <password postgres db>
+```
+
+
+### Установка зависимостей
+Для быстрой настройки проекта рекомендую воспользоваться утилитой `Make`
 
 ```commandline
 make install_requirements
 ```
 
-### Run migrations
+### Запуск миграций
 
 ```commandline
 make migrate
 ```
-### Run createsuperuser
+### Создать супер юзера
 
 ```commandline
 make createsuperuser
 ```
 
-### Run server
+### Запустить сервер
 
 ```commandline
 make runserver
 ```
 
-## Usage
+## Как использовать
 
-### Fronted available at
+### Фронтенд
 
 ```commandline
 http://127.0.0.1:8000/
 ```
 
-### Admin panel available at
+### Джанго админка
 
 ```commandline
 http://127.0.0.1:8000/admin
 ```
+### API
+
+```commandline
+http://127.0.0.1:8000/api
+```
+

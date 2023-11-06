@@ -17,7 +17,11 @@ def api_overview(request):
         'Search by Subcategory': '/?subcategory=category_name',
         'Add': '/news/create',
         'Update': '/news/update/pk',
-        'Delete': '/news/item/pk/delete'
+        'Delete': '/news/item/pk/delete',
+        'Read all news with order by filter': 'api/news/statistics/?filter=<filter>',
+        'Read all tags': 'api/news/tags',
+        'Read one news': 'api/news/<int:pk>/',
+        'Update likes or dislike': 'api/news/<int:pk>/change-likes',
     }
     return Response(api_urls)
 
