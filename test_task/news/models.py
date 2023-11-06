@@ -17,6 +17,8 @@ class News(models.Model):
     body = models.TextField(max_length=5000)
     img = models.ImageField(null=True, blank=True)
     create_at = models.DateTimeField(default=timezone.now)
+    
+    views = models.BigIntegerField(default=0)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
 

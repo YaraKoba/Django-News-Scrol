@@ -42,6 +42,18 @@ class NewsPaginationView(generics.ListAPIView):
 
         return queryset
 
+class NewsStatistics(generics.ListAPIView):
+    serializer_class = NewsEasySerializers
+
+    def get_queryset(self):
+        type_filter = self.request.query_params.get('filter', None)
+    
+        if type_filter in ['likes', 'dislikes', 'views']:
+            news = News.objects.all().order_by(f'-{type_filter}')
+            return news
+        else:
+            return News.objects.none()
+
 
 @api_view(['GET'])
 def get_news_body(request: Request, pk: int):
@@ -49,7 +61,9 @@ def get_news_body(request: Request, pk: int):
         news = News.objects.get(pk=pk)
     except News.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
+    
+    news.views += 1
+    news.save()
     serializer = NewsBodySerializers(news)
     return Response(serializer.data)
 
@@ -128,7 +142,7 @@ def change_likes(request: Request, pk):
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 def news_main(request: Request, *args, **kwargs):
     if request.path == '/news/news/':

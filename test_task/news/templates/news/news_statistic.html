@@ -11,9 +11,16 @@
         <header class="masthead text-center">
             <div class="masthead-content">
                 <div class="container px-5">
-                    <h1 class="masthead-heading mb-0">NEWS STARISTIC</h1>
-                    <h2 class="masthead-subheading mb-5">Внимательно узучайте статисику</h2>
-                    <div id="news-container">
+                    <h1 class="masthead-heading mb-1 mt-2">NEWS STARISTIC</h1>
+                    <h2 class="masthead-subheading mb-5">Выберете пораметр сортировки посмторите статистику диаграму по ней.</h2>
+                    <select id="select" class="form-select mb-5" aria-label="Default select">
+                        <option value="views" selected="">По числу просмотров</option>
+                        <option value="likes">По кол-ву лайков</option>
+                        <option value="dislikes">По кол-ву дизлайков</option>
+                     </select>
+                    <div id="news-statistics">
+                        <div id="diagram" class="diagram text-start">
+                          </div>
                     </div>
                 </div>
             </div>
@@ -21,6 +28,6 @@
     </div>
 </div>
 
-{% comment %} <script type="module" src="{% static 'news/js/infinite-scroll.js' %}"></script> {% endcomment %}
+<script type="module" src="{% static 'news/js/news-statistics.js' %}"></script>
 
 {% endblock %}

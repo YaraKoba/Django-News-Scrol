@@ -9,7 +9,7 @@ class NewsEasySerializers(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ('id', 'title', 'user_name', 'create_at', 'tags', 'img')
+        fields = ('id', 'title', 'user_name', 'create_at', 'tags', 'img', 'views', 'likes', 'dislikes')
 
     def get_tags(self, obj):
         return [tag.name for tag in obj.tag.all()]
@@ -22,7 +22,7 @@ class NewsBodySerializers(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ('id', 'title', 'body', 'user_name', 'create_at', 'tags', 'likes', 'dislikes')
+        fields = ('id', 'title', 'body', 'user_name', 'create_at', 'tags', 'views', 'likes', 'dislikes')
 
     def get_tags(self, obj):
         return [tag.name for tag in obj.tag.all()]

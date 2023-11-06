@@ -42,7 +42,7 @@ function fetchLoadPost() {
         })
         .then(newsData => {
             titleContainer.insertAdjacentHTML('afterend', `<h1 class="card-header masthead-heading mb-0">${newsData.title}</h1>`);
-            subtitleContainer.insertAdjacentHTML('afterend', `<small class="text-muted">${newsData.create_at} | Теги: ${getTagHTML(newsData.tags)}</small>`);
+            subtitleContainer.insertAdjacentHTML('afterend', `<small class="text-muted">${newsData.create_at} | 👁‍🗨 ${newsData.views} | Теги: ${getTagHTML(newsData.tags)}</small>`);
             bodyContainer.innerText = newsData.body;
             likesCount.innerText = newsData.likes;
             dislikesCount.innerText = newsData.dislikes;
@@ -89,6 +89,7 @@ function fetchLikes(data) {
             dislikeButton.disabled = false;
         });
 }
+
 
 window.addEventListener('load', fetchLoadPost);
 

@@ -39,3 +39,22 @@ export function generateNewsHTML(news_data) {
 
   return newHTML;
 }
+
+export function getDiagramHTML(post, rate, count, color) {
+  let width = post[count] * rate;
+      if (width < 15) width = 10;
+      
+  return `
+  <div class="container">
+      <div class="bar bar-item p-1 row" style="width: ${width}%; background: ${color}">
+          <a class="col text-decoration-none text-white fs-5" style="cursor: pointer;" href="/news/news/${post.id}">
+          <span class="">
+          ${post.id}
+          </span>
+          </a>
+          <p class="col text-end">${post[count]}</p>
+
+      </div>
+  </div>
+`
+}

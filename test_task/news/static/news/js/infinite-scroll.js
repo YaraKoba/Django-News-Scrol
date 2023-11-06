@@ -15,7 +15,7 @@ export const fetchNews = async (url, container) => {
     loader.style.display = 'none';
     let next_url = newsData.next;
     if (container.offsetHeight < window.innerHeight && next_url) {
-      await fetchNews(next_url, container);
+      next_url = await fetchNews(next_url, container);
     }
 
     return next_url;

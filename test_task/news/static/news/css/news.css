@@ -39,3 +39,32 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 35px;
 }
+
+.placeholder {
+  height: 400px;
+  padding: 50px;
+}
+
+.bar {
+  height: 50px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+
+.bar-item {
+    width: 150px;
+    background: #00A1FF;
+    font-style:inherit;
+    opacity: 1;
+    -webkit-transition: width 1s ease-in;
+    transition: width 1s ease-in;
+  }
+
+.bar span {
+  top: 15px;
+  left: 30px;
+  position: relative;
+}
+
+
